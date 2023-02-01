@@ -8,6 +8,7 @@ namespace SistemaVenda.Models.Profiles
         public MappingProfile()
         {
             CreateMap<Categoria, CategoriaViewModel>().ReverseMap();
+            CreateMap<Cliente, ClienteViewModel>().ReverseMap();
         }
     }
 }

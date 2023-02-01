@@ -21,13 +21,6 @@ namespace SistemaVenda.Controllers
 
         public IActionResult Index()
         {
-           /* var categoria = new Categoria
-            {
-                Nome = "Eletrodomesticos"
-            };
-            _context.Categorias.Add(categoria);
-
-            _context.SaveChanges();*/
             return View();
         }
 
