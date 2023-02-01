@@ -1,0 +1,40 @@
+﻿<h2>Categorias</h2>
+<hr />
+
+@model SistemaVenda.Models.CategoriaViewModel
+
+<form asp-controller="Categoria" asp-action="Cadastro" method="post">
+    <input type="hidden" asp-for="Id" value="@Model.Id" />
+
+    <div class="form-group">
+        <div class="col-4">
+            <label>Descrição</label>
+            <input asp-for="Nome" type="text" value="@Model.Nome" class="form-control" />
+            <span asp-validation-for="Nome" class="text-danger"></span>
+        </div>
+        <br />
+        <div class="col">
+            <button type="button" class="btn btn-info" onclick="Novo()">Novo</button>
+            <button type="submit" class="btn btn-success">Gravar</button>
+            <button type="button" class="btn btn-warning" onclick="Listagem()">Listagem</button>
+            <button type="button" class="btn btn-danger" onclick="Excluir()">Excluir</button>
+
+        </div>
+    </div>
+</form>
+<script>
+    function Request(request) {
+        window.location = window.origin + request;
+    }
+    function Novo() {
+        Request("\\Categories\\Cadastro");
+    }
+    function Listagem() {
+        Request("\\Categories");
+    }
+
+    function Excluir() {
+        Request("\\Categories\\Excluir\\" + Id);
+    }
+</script>
+
