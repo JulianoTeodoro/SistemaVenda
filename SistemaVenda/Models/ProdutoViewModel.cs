@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using SistemaVenda.Entidades;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -19,9 +20,11 @@ namespace SistemaVenda.Models
 
         [Required(ErrorMessage = "Precisa de categoria")]
         public int CategoriaId { get; set; }
+        public Categoria Categoria { get; set; }
 
         [Required(ErrorMessage = "Valor is required")]
         public double Valor { get; set; }
+
 
     }
 }

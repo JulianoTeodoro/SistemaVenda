@@ -21,7 +21,7 @@ namespace SistemaVenda.Controllers
         public IActionResult Index()
         {
 
-            var produtos = _context.Produtos.ToList();
+            var produtos = _context.Produtos.Include(p => p.Categoria).ToList();
 
             var produtosView = _mapper.Map<List<ProdutoViewModel>>(produtos);
 
@@ -77,7 +77,7 @@ namespace SistemaVenda.Controllers
         }
 
 
-        [HttpPut]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(ProdutoFormViewModel produtoView)
         {

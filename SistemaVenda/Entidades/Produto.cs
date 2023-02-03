@@ -24,6 +24,7 @@ namespace SistemaVenda.Entidades
 
         [Required(ErrorMessage = "Precisa de categoria")]
         public int CategoriaId { get; set; }
+        public Categoria Categoria { get; set; }
 
         [Required(ErrorMessage = "Valor is required")]
         [Column(TypeName = "decimal(10,2)")]
