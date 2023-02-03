@@ -23,7 +23,9 @@ namespace SistemaVenda.Controllers
         {
             var categorias = _context.Categorias.ToList();
 
-            return View(categorias);
+            var categoriaView = _mapper.Map<List<CategoriaViewModel>>(categorias);
+
+            return View(categoriaView);
         }
 
         public IActionResult Create()

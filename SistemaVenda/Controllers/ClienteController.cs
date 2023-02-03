@@ -23,9 +23,9 @@ namespace SistemaVenda.Controllers
         {
 
             var clientes = _context.Clientes.ToList();
+            var clienteView = _mapper.Map<List<ClienteViewModel>>(clientes);
 
-
-            return View(clientes);
+            return View(clienteView);
         }
 
         

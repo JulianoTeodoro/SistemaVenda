@@ -1,0 +1,35 @@
+﻿@model SistemaVenda.Models.ProdutoViewModel
+
+
+@{
+    ViewData["Title"] = "Remover produto";
+}
+
+<div class="text-center">
+    <h1 class="display-4">@ViewData["Title"]</h1>
+    </br>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayFor(model => model.Id)
+        </dt>
+        <dd class="col-sm-2">
+            @Html.DisplayFor(model => model.Nome)
+        </dd>
+        <dd class="col-sm-2">
+            @Html.DisplayFor(model => model.Descricao)
+        </dd>
+        <dd class="col-sm-2">
+            @Html.DisplayFor(model => model.Quantidade)
+        </dd>
+        <dd class="col-sm-2">
+            @Html.DisplayFor(model => model.Valor)
+        </dd>
+    </dl>
+    <form asp-action="Delete" method="post">
+
+        <div class="form-group">
+            <input type="submit" value="Delete" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-info">Back to List</a>
+        </div>
+    </form>
+</div>

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SistemaVenda.Entidades.Categoria>;
+﻿@model IEnumerable<SistemaVenda.Models.CategoriaViewModel>;
 
 @{
     ViewData["Title"] = "Categorys";
@@ -44,7 +44,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (SistemaVenda.Entidades.Categoria item in Model)
+            @foreach (SistemaVenda.Models.CategoriaViewModel item in Model)
             {
                 <tr>
                     <td>

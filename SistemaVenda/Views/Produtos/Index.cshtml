@@ -1,7 +1,7 @@
-﻿@model IEnumerable<SistemaVenda.Models.ClienteViewModel>
+﻿@model IEnumerable<SistemaVenda.Models.ProdutoViewModel>
 
 @{
-    ViewData["Title"] = "Clientes";
+    ViewData["Title"] = "Produtos";
 }
 <div>
     <h2>@ViewData["Title"]</h2>
@@ -27,37 +27,37 @@
                     @Html.DisplayNameFor(model => model.Id)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Name)
+                    @Html.DisplayNameFor(model => model.Nome)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Email)
+                    @Html.DisplayNameFor(model => model.Descricao)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Celular)
+                    @Html.DisplayNameFor(model => model.Quantidade)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.CNPJ_CPF)
+                    @Html.DisplayNameFor(model => model.Valor)
                 </th>
             </tr>
         </thead>
         <tbody>
-            @foreach (SistemaVenda.Models.ClienteViewModel item in Model)
+            @foreach (SistemaVenda.Models.ProdutoViewModel item in Model)
             {
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.Id)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Name)
+                        @Html.DisplayFor(modelItem => item.Nome)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Email)
+                        @Html.DisplayFor(modelItem => item.Descricao)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Celular)
+                        @Html.DisplayFor(modelItem => item.Quantidade)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.CNPJ_CPF)
+                        @Html.DisplayFor(modelItem => item.Valor)
                     </td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.Id" title="Edit" class="btn btn-warning">
@@ -65,8 +65,8 @@
                         </a>
                     </td>
                     <td>
-                        <a asp-action="Remove" asp-route-id="@item.Id" title="Remove" class="btn btn-secondary">
-                            <span class="fas fa-edit">Remove</span>
+                        <a asp-action="Delete" asp-route-id="@item.Id" title="Delete" class="btn btn-secondary">
+                            <span class="fas fa-edit">Delete</span>
                         </a>
                     </td>
                 </tr>
