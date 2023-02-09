@@ -10,6 +10,7 @@ namespace SistemaVenda.Models.Profiles
             CreateMap<Produto, ProdutoViewModel>().ReverseMap();
             CreateMap<Categoria, CategoriaViewModel>().ReverseMap();
             CreateMap<Cliente, ClienteViewModel>().ReverseMap();
+            CreateMap<Venda, VendaViewModel>().ReverseMap();
         }
     }
 }

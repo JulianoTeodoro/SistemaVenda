@@ -1,0 +1,148 @@
+﻿@model SistemaVenda.Models.VendaFormViewModel
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@{
+    ViewData["Title"] = "Adicionar venda";
+}
+<div class="text-center">
+    <h1 class="display-4">@ViewData["Title"]</h1>
+    <div class="row">
+
+        <div class="col-md-4">
+
+            <form asp-action="Create" method="post">
+
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Venda.DataVenda" class="control-label"></label>
+                    <input asp-for="Venda.DataVenda" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Venda.ClienteId" class="control-label">Clientes: </label>
+                    <select asp-for="Venda.ClienteId" asp-items="@(new SelectList(Model.ListaClientes, "Id", "Name"))" class="form-control"></select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Produtos: </label>
+                    <select id="cboProduto" onchange="BuscarPrecoProduto()" asp-items="@(new SelectList(Model.ListaProdutos, "Id", "Nome"))" class="form-control"></select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Preço Unitario: </label>
+                    <input id="txtPrecoUnitario" class="form-control" disabled/>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Quantidade: </label>
+                    <input id="txtQuantidade" class="form-control" onchange="CalcularSubTotal()" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Subtotal: </label>
+                    <input id="subtotal" type="number" class="form-control" disabled />
+                </div>
+                <br />
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <table class="table table-bordered">
+                            <thead class="thread-inverse">
+                                <tr style="background-color: #f6f6f6">
+                                    <th>Produto: </th>
+                                    <th>Preço Unitario: </th>
+                                    <th>Quantidade: </th>
+                                    <th>Total: </th>
+                                </tr>
+                            </thead>
+                            <tbody id="gridProdutos"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <button type="button" onclick="AddProduto()" class="btn btn-info">Adicionar</button>
+
+                <textarea asp-for="Venda.JsonProdutos" id="txtJsonProdutos" class="col" hidden></textarea>
+                <div class="form-group">
+                    <label>Total: </label>
+                    <input id="txtTotal" class="form-control" disabled />
+                    <span asp-validation-for="Venda.ValorTotal" class="text-danger"></span>
+                </div>
+                <br />
+
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <a asp-action="Index" class="btn btn-info">Back to List</a>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    function CalcularSubTotal() {
+        var PrecoUnitario = document.getElementById("txtPrecoUnitario").value;
+        var subTotal = PrecoUnitario * document.getElementById("txtQuantidade").value;
+
+        document.getElementById("subtotal").value = subTotal;
+    }
+
+    function FixaDuasCasasDecimais(num) {
+        return parseFloat(Math.round(num * 100) / 100).toFixed(2);
+    }
+
+    function BuscarPrecoProduto() {
+        var codigoProduto = document.getElementById("cboProduto");
+        var url = `/LerValorProduto/${codigoProduto.value}`;
+
+        var xhr = new XMLHttpRequest();
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+                document.getElementById("txtPrecoUnitario").value = xhr.responseText;
+            }
+        }
+        xhr.open('GET', url, false);
+        xhr.send(null);
+    }
+
+    var Items = new Object();
+    Items.Produtos = new Array();
+    var gridProdutos = document.getElementById("gridProdutos");
+
+    function AddProduto() {
+        var idProduto = document.getElementById("cboProduto");
+        var Quantidade = document.getElementById("txtQuantidade").value;
+        var ValorUnitario = document.getElementById("txtPrecoUnitario").value;
+        var subTotal = document.getElementById("subtotal").value;
+
+        Items.Produtos.push({
+            "ProdutoId": idProduto.value,
+            "Quantidade": Quantidade,
+            "ValorUnitario": ValorUnitario,
+            "ValorTotal": subTotal
+        });
+
+        document.getElementById("txtJsonProdutos").value = JSON.stringify(Items.Produtos);
+
+        var linhaGrid = "<tr id='" + idProduto.value + "'>" +
+            "<td>" + idProduto.options[idProduto.selectedIndex].text + "</td>" +
+            "<td>" + Quantidade + "</td>" +
+            "<td>" + ValorUnitario + "</td>" +
+            "<td>" + FixaDuasCasasDecimais(subTotal) + "</td>";
+
+        gridProdutos.innerHTML += linhaGrid;
+
+        var total = Number(document.getElementById("txtTotal").value.toString().replace(",", ".")) +
+            Number(subTotal);
+
+        document.getElementById("txtTotal").value = FixaDuasCasasDecimais(total).replace(".", ",");
+        document.getElementById("txtQuantidade").value = "";
+        document.getElementById("txtPrecoUnitario").value = "";
+        document.getElementById("subtotal").value = "";
+        document.getElementById("cboProduto").selectedIndex = -1;
+    }
+
+</script>

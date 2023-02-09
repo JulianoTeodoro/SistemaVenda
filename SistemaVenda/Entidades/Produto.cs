@@ -7,7 +7,7 @@ namespace SistemaVenda.Entidades
     public class Produto
     {
 
-        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Name is required")]

@@ -7,37 +7,23 @@ namespace SistemaVenda.Entidades
 {
     public class Venda
     {
-        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [DataType(DataType.DateTime)]
-        public DateTime? DataVenda
-        {
-            get
-            {
-                return DataVenda;
-            }
-            set
-            {
-                if (value == null)
-                {
-                    value = DateTime.Now;
-                }
-            }
-        }
+        public DateTime? DataVenda { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
         public double ValorTotal { get; set; }
 
         [Required]
-        [Range(1, double.PositiveInfinity, ErrorMessage = "Precisa ser 1 ou mais")]
         public int ClienteId { get; set; }
 
         public Cliente Cliente { get; set; }
 
         public ICollection<VendaProdutos> Produtos { get; set; }
- 
+
 
 
     }

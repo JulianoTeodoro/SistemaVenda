@@ -8,20 +8,21 @@ namespace SistemaVenda.Entidades
     {
 
 
-        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-
-        [Required(ErrorMessage = "Precisa ser id para venda")]
-        public int VendaId { get; set; }
-
-        [Required(ErrorMessage = "Precisa de id para produto")]
-        public int ProdutoId { get; set; }
 
         [Required]
         [Range(1, double.PositiveInfinity, ErrorMessage = "Precisa ser 1 ou mais")]
         public int Quantidade { get; set; }
 
+        [Required(ErrorMessage = "Precisa ser id para venda")]
+        public int VendaId { get; set; }
+
         public Venda Venda { get; set; }
+
+
+        [Required(ErrorMessage = "Precisa de id para produto")]
+        public int ProdutoId { get; set; }
         public Produto Produto { get; set; }
 
 
