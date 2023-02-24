@@ -1,6 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SistemaVenda.DAL;
+using SistemaVenda.Entidades;
+using SistemaVenda.Helpers;
 using SistemaVenda.Models.Profiles;
+using SistemaVenda.Services;
 using System;
 
 namespace SistemaVenda
@@ -50,6 +54,14 @@ namespace SistemaVenda
             {
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
+
+
+            services.AddIdentity<Usuario, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddScoped<IAuthenticate, AuthenticateService>();
+            services.AddScoped<Criptografia>();
 
             services.AddControllersWithViews();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

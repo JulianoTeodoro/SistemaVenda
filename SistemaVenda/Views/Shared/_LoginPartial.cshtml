@@ -1,0 +1,38 @@
+﻿@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContexto;
+
+@{
+    var logado = 0;
+    var nomeUsuario = string.Empty;
+    try
+    {
+        logado = (int)HttpContexto.HttpContext.Session.GetInt32(SistemaVenda.Helpers.Sessao.LOGADO);
+        if (logado == 1)
+        {
+            nomeUsuario = HttpContexto.HttpContext.Session.GetString(SistemaVenda.Helpers.Sessao.NOME_USUARIO);
+
+        }
+    }
+    catch
+    {
+    }
+}
+
+@if (Context.User.Identity.IsAuthenticated)
+{
+    <li class="nav-item">
+        <a class="nav-link text-capitalize" asp-area="" asp-controller="Account" asp-action="Logout"
+       style="color: blue">@nomeUsuario - Logout</a>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link text-capitalize" asp-area="" asp-controller="Account" asp-action="Login"
+       style="color: blue">Login</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-capitalize" asp-area="" asp-controller="Account" asp-action="Register"
+       style="color: blue">Register</a>
+    </li>
+}

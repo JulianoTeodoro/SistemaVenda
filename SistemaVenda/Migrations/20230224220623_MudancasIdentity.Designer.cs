@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SistemaVenda.DAL;
 
@@ -11,9 +12,10 @@ using SistemaVenda.DAL;
 namespace SistemaVenda.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230224220623_MudancasIdentity")]
+    partial class MudancasIdentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -170,7 +172,7 @@ namespace SistemaVenda.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categorias", (string)null);
+                    b.ToTable("Categorias");
                 });
 
             modelBuilder.Entity("SistemaVenda.Entidades.Cliente", b =>
@@ -199,7 +201,7 @@ namespace SistemaVenda.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clientes", (string)null);
+                    b.ToTable("Clientes");
                 });
 
             modelBuilder.Entity("SistemaVenda.Entidades.Produto", b =>
@@ -232,7 +234,7 @@ namespace SistemaVenda.Migrations
 
                     b.HasIndex("CategoriaId");
 
-                    b.ToTable("Produtos", (string)null);
+                    b.ToTable("Produtos");
                 });
 
             modelBuilder.Entity("SistemaVenda.Entidades.Usuario", b =>
@@ -325,7 +327,7 @@ namespace SistemaVenda.Migrations
 
                     b.HasIndex("ClienteId");
 
-                    b.ToTable("Vendas", (string)null);
+                    b.ToTable("Vendas");
                 });
 
             modelBuilder.Entity("SistemaVenda.Entidades.VendaProdutos", b =>
@@ -353,7 +355,7 @@ namespace SistemaVenda.Migrations
 
                     b.HasKey("VendaId", "ProdutoId");
 
-                    b.ToTable("VendaProdutos", (string)null);
+                    b.ToTable("VendaProdutos");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

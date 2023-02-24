@@ -7,7 +7,6 @@ namespace SistemaVenda.DAL
     public class ApplicationDbContext : IdentityDbContext<Usuario>
     {
 
-        public ApplicationDbContext() : base() { }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options) { }
 
@@ -19,6 +18,8 @@ namespace SistemaVenda.DAL
         public DbSet<Venda> Vendas { get; set; }
 
         public DbSet<Cliente> Clientes { get; set; }
+
+        public DbSet<Usuario> Usuarios { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

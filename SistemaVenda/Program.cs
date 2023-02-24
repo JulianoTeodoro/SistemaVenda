@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using SistemaVenda;
 using SistemaVenda.DAL;
+using SistemaVenda.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
