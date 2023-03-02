@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Domain.Entidades;
-using SistemaVenda.Helpers;
 using Domain.Services.Interfaces;
 
 namespace Domain.Services

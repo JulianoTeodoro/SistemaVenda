@@ -28,6 +28,7 @@ namespace Infra
             services.AddScoped<IClienteRepository, ClienteRepository>();
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
             services.AddScoped<IVendaRepository, VendaRepository>();
+            services.AddScoped<IVendaProdutoRepository, VendaProdutosRepository>();
             services.AddScoped<IAuthenticate, AuthenticateService>();
             services.AddIdentity<Usuario, IdentityRole>()
                     .AddEntityFrameworkStores<ApplicationDbContext>()

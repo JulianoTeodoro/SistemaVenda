@@ -5,47 +5,34 @@ using Repositorio.DAL;
 using Domain.Entidades;
 using System;
 using System.Globalization;
+using Repositorio.Interfaces;
+using Application.Services.Interfaces;
 
 namespace SistemaVenda.Controllers
 {
     public class RelatorioController : Controller
     {
-        protected readonly ApplicationDbContext _context;
+        protected readonly IVendaProdutoRepository _vendaProdutoRepository;
+        protected IGraficoService _graficoService;
         protected readonly IMapper _mapper;
 
-        public RelatorioController(ApplicationDbContext context, IMapper mapper)
+        public RelatorioController(IVendaProdutoRepository vendaProdutoRepository, IMapper mapper, IGraficoService graficoService)
         {
-            _context = context;
+            _vendaProdutoRepository = vendaProdutoRepository;
             _mapper = mapper;
+            _graficoService = graficoService;
         }
 
         public IActionResult Grafico()
         {
 
-            var consulta = _context.VendaProdutos.GroupBy(p => p.ProdutoId)
-                                                 .Select(y => new Grafico
-                                                 {
-                                                     CodigoProduto = y.First().ProdutoId,
-                                                     Descricao = y.First().Produto.Nome,
-                                                     TotalVendido = y.Sum(z => z.Quantidade)
-                                                 }).ToList();
+            var consulta = _vendaProdutoRepository.Grafico();
 
-            string valores = string.Empty; 
-            string labels = string.Empty;
-            string cores = string.Empty;
+            var modelo = _graficoService.Grafico(consulta);
 
-            var random = new Random();
-
-            for(int i = 0; i < consulta.Count; i++)
-            {
-                valores += consulta[i].TotalVendido.ToString() + ",";
-                labels += "'" + consulta[i].Descricao.ToString() + "',";
-                cores += "'" + String.Format("#{0:X6}", random.Next(0x100000) + "',");
-            }
-
-            ViewBag.Valores = valores;
-            ViewBag.Labels = labels;
-            ViewBag.Cores = cores;
+            ViewBag.Valores = modelo.Valores;
+            ViewBag.Labels = modelo.Labels;
+            ViewBag.Cores = modelo.Cores;
 
             return View();
         }

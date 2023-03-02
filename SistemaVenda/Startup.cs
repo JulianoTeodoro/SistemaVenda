@@ -56,6 +56,7 @@ namespace SistemaVenda
             services.AddScoped<Criptografia>();
             services.AddInfrascruture(configuration);
 
+            services.AddScoped<IGraficoService, GraficoService>();
             services.AddScoped<IVendaService, VendaService>();
             services.AddControllersWithViews();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
