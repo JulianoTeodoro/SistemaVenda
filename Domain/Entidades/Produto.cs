@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace SistemaVenda.Entidades
+namespace Domain.Entidades
 {
     public class Produto
     {

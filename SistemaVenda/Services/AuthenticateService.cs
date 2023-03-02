@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using SistemaVenda.DAL;
-using SistemaVenda.Entidades;
+using Repositorio.DAL;
+using Domain.Entidades;
 using SistemaVenda.Helpers;
 
 namespace SistemaVenda.Services

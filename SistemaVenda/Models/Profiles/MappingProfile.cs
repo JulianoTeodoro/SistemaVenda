@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using SistemaVenda.Entidades;
+using Domain.Entidades;
 
 namespace SistemaVenda.Models.Profiles
 {

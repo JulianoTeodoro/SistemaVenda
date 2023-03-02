@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Application.Services;
+using Application.Services.Interfaces;
+using Domain.Entidades;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using SistemaVenda.DAL;
-using SistemaVenda.Entidades;
+using Repositorio.DAL;
+using Repositorio.Interfaces;
+using Repositorio.Repositories;
 using SistemaVenda.Helpers;
 using SistemaVenda.Models.Profiles;
 using SistemaVenda.Services;
@@ -62,12 +66,13 @@ namespace SistemaVenda
 
             services.AddScoped<IAuthenticate, AuthenticateService>();
             services.AddScoped<Criptografia>();
+            // services.AddScoped<IServicoAplicacaoCategoria, ServicoAplicacaoCategoria>();
+            services.AddScoped<ICategoriaRepository, CategoriaRepository>();
 
             services.AddControllersWithViews();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSession();
             services.AddAutoMapper(typeof(MappingProfile));
-
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SistemaVenda.Entidades
+namespace Domain.Entidades
 {
     public class VendaProdutos
     {

@@ -1,4 +1,4 @@
-﻿namespace SistemaVenda.Entidades
+﻿namespace Domain.Entidades
 {
     public class Grafico
     {

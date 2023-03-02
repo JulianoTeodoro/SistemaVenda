@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using SistemaVenda.DAL;
-using SistemaVenda.Entidades;
+using Repositorio.DAL;
+using Domain.Entidades;
 using SistemaVenda.Models;
 
 namespace SistemaVenda.Controllers

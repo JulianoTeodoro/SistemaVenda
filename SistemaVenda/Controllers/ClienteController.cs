@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using SistemaVenda.DAL;
-using SistemaVenda.Entidades;
+using Repositorio.DAL;
+using Domain.Entidades;
 using SistemaVenda.Models;
 using Microsoft.EntityFrameworkCore;
 

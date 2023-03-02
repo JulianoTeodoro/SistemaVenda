@@ -1,4 +1,4 @@
-﻿using SistemaVenda.Entidades;
+﻿using Domain.Entidades;
 using System.ComponentModel.DataAnnotations;
 
 namespace SistemaVenda.Models

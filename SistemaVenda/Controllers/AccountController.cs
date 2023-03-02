@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using SistemaVenda.Entidades;
+using Domain.Entidades;
 using SistemaVenda.Helpers;
 using SistemaVenda.Models;
 using SistemaVenda.Services;

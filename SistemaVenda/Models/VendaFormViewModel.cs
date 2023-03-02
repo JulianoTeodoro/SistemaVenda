@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using SistemaVenda.Entidades;
+using Domain.Entidades;
 
 namespace SistemaVenda.Models
 {

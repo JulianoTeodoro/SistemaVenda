@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SistemaVenda.DAL;
+using Repositorio.DAL;
 using SistemaVenda.Models;
 using System.Diagnostics;
-using SistemaVenda.Entidades;
+using Domain.Entidades;
 using Microsoft.EntityFrameworkCore;
 
 namespace SistemaVenda.Controllers

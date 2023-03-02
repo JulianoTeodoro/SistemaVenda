@@ -1,29 +1,30 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SistemaVenda.DAL;
-using SistemaVenda.Entidades;
+using Repositorio.DAL;
+using Domain.Entidades;
 using SistemaVenda.Models;
+using Repositorio.Interfaces;
 
 namespace SistemaVenda.Controllers
 {
     public class CategoriesController : Controller
     {
 
-        protected readonly ApplicationDbContext _context;
+        protected readonly ICategoriaRepository _categoriaRepository;
         protected readonly IMapper _mapper;
 
-        public CategoriesController(ApplicationDbContext context, IMapper mapper)
+        public CategoriesController(ICategoriaRepository categoriaRepository, IMapper mapper)
         {
-            _context = context;
+            _categoriaRepository = categoriaRepository;
             _mapper = mapper;
         }
 
         public IActionResult Index()
         {
-            var categorias = _context.Categorias.ToList();
+            var categorias = _categoriaRepository.Get();
 
-            var categoriaView = _mapper.Map<List<CategoriaViewModel>>(categorias);
+            var categoriaView = _mapper.Map<IEnumerable<CategoriaViewModel>>(categorias);
 
             return View(categoriaView);
         }
@@ -45,8 +46,7 @@ namespace SistemaVenda.Controllers
 
             var category = _mapper.Map<Categoria>(categoria);
 
-            _context.Categorias.Add(category);
-            _context.SaveChanges();
+            _categoriaRepository.Create(category);
 
             return RedirectToAction(nameof(Index));
         }
@@ -59,7 +59,7 @@ namespace SistemaVenda.Controllers
                 return BadRequest("Erro ao editar");
             }
 
-            var categoria = _context.Categorias.FirstOrDefault(p => p.Id == id);
+            var categoria = _categoriaRepository.GetById(p => p.Id == id);
             var category = _mapper.Map<CategoriaViewModel>(categoria);
             return View(category);
         }
@@ -70,8 +70,7 @@ namespace SistemaVenda.Controllers
         public IActionResult Edit(CategoriaViewModel categoria)
         {
             var category = _mapper.Map<Categoria>(categoria);
-            _context.Entry(category).State = EntityState.Modified;
-            _context.SaveChanges();
+            _categoriaRepository.Update(category);
 
             return RedirectToAction(nameof(Index));
         }
@@ -83,7 +82,7 @@ namespace SistemaVenda.Controllers
                 return BadRequest("Erro ao remover");
             }
 
-            var categoria = _context.Categorias.FirstOrDefault(p => p.Id == id);
+            var categoria = _categoriaRepository.GetById(p => p.Id == id);
             var category = _mapper.Map<CategoriaViewModel>(categoria);
 
             return View(category);
@@ -97,8 +96,7 @@ namespace SistemaVenda.Controllers
 
             var category = _mapper.Map<Categoria>(categoria);
 
-            _context.Categorias.Remove(category);
-            _context.SaveChanges();
+            _categoriaRepository.Delete(category);
             return RedirectToAction(nameof(Index));
 
         }

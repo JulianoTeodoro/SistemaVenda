@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using SistemaVenda.Entidades;
+using Domain.Entidades;
 
-namespace SistemaVenda.DAL
+namespace Repositorio.DAL
 {
     public class ApplicationDbContext : IdentityDbContext<Usuario>
     {

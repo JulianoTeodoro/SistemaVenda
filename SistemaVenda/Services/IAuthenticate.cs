@@ -1,4 +1,4 @@
-﻿using SistemaVenda.Entidades;
+﻿using Domain.Entidades;
 
 namespace SistemaVenda.Services
 {
