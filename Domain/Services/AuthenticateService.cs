@@ -1,23 +1,21 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Repositorio.DAL;
 using Domain.Entidades;
 using SistemaVenda.Helpers;
+using Domain.Services.Interfaces;
 
-namespace SistemaVenda.Services
+namespace Domain.Services
 {
     public class AuthenticateService : IAuthenticate
     {
 
         private readonly UserManager<Usuario> _userManager;
         private readonly SignInManager<Usuario> _signInManager;
-        protected readonly ApplicationDbContext _context;
 
-        public AuthenticateService(UserManager<Usuario> userManager, SignInManager<Usuario> signInManager, ApplicationDbContext context)
+        public AuthenticateService(UserManager<Usuario> userManager, SignInManager<Usuario> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _context = context;
         }
 
         public async Task<bool> Authenticate(string email, string password)
@@ -52,14 +50,6 @@ namespace SistemaVenda.Services
             return false;
         }
 
-        public async Task<Usuario> Resgatar(string email, string password)
-        {
-            var Senha = Criptografia.GetMd5Hash(password);
-
-            var usuario = await _context.Usuarios.Where(p => p.Email == email).FirstOrDefaultAsync();
-
-            return usuario;
-        }
 
     }
 }

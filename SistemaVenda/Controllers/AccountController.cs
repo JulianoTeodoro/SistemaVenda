@@ -3,17 +3,17 @@ using Microsoft.AspNetCore.Mvc;
 using Domain.Entidades;
 using SistemaVenda.Helpers;
 using SistemaVenda.Models;
-using SistemaVenda.Services;
+using Application.Services.Interfaces;
 
 namespace SistemaVenda.Controllers
 {
     public class AccountController : Controller
     {
 
-        private readonly IAuthenticate _authenticate;
+        private readonly IUsuarioService _authenticate;
         protected IHttpContextAccessor HttpContextAccessor;
 
-        public AccountController(IAuthenticate authenticate, IHttpContextAccessor httpContextAccessor)
+        public AccountController(IUsuarioService authenticate, IHttpContextAccessor httpContextAccessor)
         {
             _authenticate = authenticate;
             HttpContextAccessor = httpContextAccessor;

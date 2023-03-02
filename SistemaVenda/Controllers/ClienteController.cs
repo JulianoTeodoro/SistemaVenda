@@ -4,25 +4,27 @@ using Repositorio.DAL;
 using Domain.Entidades;
 using SistemaVenda.Models;
 using Microsoft.EntityFrameworkCore;
+using Repositorio.Repositories;
+using Repositorio.Interfaces;
 
 namespace SistemaVenda.Controllers
 {
     public class ClienteController : Controller
     {
 
-        protected readonly ApplicationDbContext _context;
+        protected IClienteRepository _clienteRepository;
         protected IMapper _mapper;
 
-        public ClienteController(ApplicationDbContext context, IMapper mapper)
+        public ClienteController(IClienteRepository clienteRepository, IMapper mapper)
         {
-            _context = context;
+            _clienteRepository = clienteRepository;
             _mapper = mapper;
         }
 
         public IActionResult Index()
         {
 
-            var clientes = _context.Clientes.ToList();
+            var clientes = _clienteRepository.Get();
             var clienteView = _mapper.Map<List<ClienteViewModel>>(clientes);
 
             return View(clienteView);
@@ -45,8 +47,7 @@ namespace SistemaVenda.Controllers
             }
 
             var client = _mapper.Map<Cliente>(cliente);
-            _context.Clientes.Add(client);
-            _context.SaveChanges();
+            _clienteRepository.Create(client);
 
             return RedirectToAction("Index");
         }
@@ -54,7 +55,7 @@ namespace SistemaVenda.Controllers
         [HttpGet]
         public IActionResult Edit(int? id)
         {
-            var cliente = _context.Clientes.FirstOrDefault(p => p.Id == id);
+            var cliente = _clienteRepository.GetById(p => p.Id == id);
 
             var clienteView = _mapper.Map<ClienteViewModel>(cliente);
             return View(clienteView);
@@ -70,8 +71,7 @@ namespace SistemaVenda.Controllers
             }
 
             var client = _mapper.Map<Cliente>(cliente);
-            _context.Entry(client).State = EntityState.Modified;
-            _context.SaveChanges();
+            _clienteRepository.Update(client);
             return RedirectToAction("Index");
 
         }
@@ -84,7 +84,7 @@ namespace SistemaVenda.Controllers
                 return BadRequest("Erro ao remover");
             }
 
-            var cliente = _context.Clientes.FirstOrDefault(p => p.Id == id);
+            var cliente = _clienteRepository.GetById(p => p.Id == id);
 
             var clienteView = _mapper.Map<ClienteViewModel>(cliente);
             return View(clienteView);
@@ -96,8 +96,7 @@ namespace SistemaVenda.Controllers
         {
 
             var client = _mapper.Map<Cliente>(cliente);
-            _context.Clientes.Remove(client);
-            _context.SaveChanges();
+            _clienteRepository.Delete(client);
 
             return RedirectToAction("Index");
 

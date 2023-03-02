@@ -4,24 +4,27 @@ using Repositorio.DAL;
 using Domain.Entidades;
 using SistemaVenda.Models;
 using Microsoft.EntityFrameworkCore;
+using Repositorio.Interfaces;
 
 namespace SistemaVenda.Controllers
 {
     public class ProdutosController : Controller
     {
-        protected readonly ApplicationDbContext _context;
+        protected IProdutoRepository _produtoRepository;
+        protected ICategoriaRepository _categoriaRepository;
         protected readonly IMapper _mapper;
 
-        public ProdutosController(ApplicationDbContext context, IMapper mapper)
+        public ProdutosController(IProdutoRepository produtoRepository, ICategoriaRepository categoriaRepository, IMapper mapper)
         {
-            _context = context;
+            _produtoRepository = produtoRepository;
+            _categoriaRepository = categoriaRepository;
             _mapper = mapper;
         }
 
         public IActionResult Index()
         {
 
-            var produtos = _context.Produtos.Include(p => p.Categoria).ToList();
+            var produtos = _produtoRepository.Get();
 
             var produtosView = _mapper.Map<List<ProdutoViewModel>>(produtos);
 
@@ -31,7 +34,7 @@ namespace SistemaVenda.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            var categorys = _context.Categorias.ToList();
+            var categorys = _categoriaRepository.Get();
 
             var categoryView = _mapper.Map<List<CategoriaViewModel>>(categorys);
 
@@ -49,7 +52,7 @@ namespace SistemaVenda.Controllers
         {
             if(!ModelState.IsValid)
             {
-                var categorys = _context.Categorias.ToList();
+                var categorys = _categoriaRepository.Get();
                 var categoryView = _mapper.Map<List<CategoriaViewModel>>(categorys);
 
                 var viewModel = new ProdutoFormViewModel { Categorias = categoryView };
@@ -57,8 +60,7 @@ namespace SistemaVenda.Controllers
             }
 
             var produto = _mapper.Map<Produto>(produtoView.Produto);
-            _context.Produtos.Add(produto);
-            _context.SaveChanges();
+            _produtoRepository.Create(produto);
 
             return RedirectToAction(nameof(Index));
         }
@@ -66,10 +68,10 @@ namespace SistemaVenda.Controllers
         [HttpGet]
         public IActionResult Edit(int? id)
         {
-            var categorys = _context.Categorias.ToList();
+            var categorys = _categoriaRepository.Get();
             var categoryView = _mapper.Map<List<CategoriaViewModel>>(categorys);
 
-            var produto = _context.Produtos.FirstOrDefault(p => p.Id == id);
+            var produto = _produtoRepository.GetById(p => p.Id == id);
             var produtoView = _mapper.Map<ProdutoViewModel>(produto);
 
             var viewModel = new ProdutoFormViewModel { Categorias = categoryView, Produto = produtoView };
@@ -83,7 +85,7 @@ namespace SistemaVenda.Controllers
         {
             if(!ModelState.IsValid)
             {
-                var categorys = _context.Categorias.ToList();
+                var categorys = _categoriaRepository.Get();
                 var categoryView = _mapper.Map<List<CategoriaViewModel>>(categorys);
 
                 var viewModel = new ProdutoFormViewModel { Categorias = categoryView, Produto = produtoView.Produto };
@@ -92,8 +94,7 @@ namespace SistemaVenda.Controllers
 
             var produto = _mapper.Map<Produto>(produtoView.Produto);
 
-            _context.Entry(produto).State = EntityState.Modified;
-            _context.SaveChanges();
+            _produtoRepository.Update(produto);
 
             return RedirectToAction(nameof(Index));
         }
@@ -101,7 +102,7 @@ namespace SistemaVenda.Controllers
         [HttpGet]
         public IActionResult Delete(int? id)
         {
-            var produto = _context.Produtos.FirstOrDefault(p => p.Id == id);
+            var produto = _produtoRepository.GetById(p => p.Id == id);
 
             var produtoView = _mapper.Map<ProdutoViewModel>(produto);
             return View(produtoView);
@@ -114,9 +115,7 @@ namespace SistemaVenda.Controllers
         {
             var produto = _mapper.Map<Produto>(produtoView);
 
-            _context.Produtos.Remove(produto);
-
-            _context.SaveChanges();
+            _produtoRepository.Delete(produto);
 
             return RedirectToAction(nameof(Index));
 

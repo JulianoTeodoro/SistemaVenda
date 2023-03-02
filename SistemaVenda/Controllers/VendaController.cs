@@ -5,24 +5,28 @@ using Newtonsoft.Json;
 using Repositorio.DAL;
 using Domain.Entidades;
 using SistemaVenda.Models;
+using Repositorio.Interfaces;
+using Application.Services.Interfaces;
 
 namespace SistemaVenda.Controllers
 {
     public class VendaController : Controller
     {
 
-        protected readonly ApplicationDbContext _context;
+        protected IVendaRepository _vendaRepository;
         protected readonly IMapper _mapper;
+        protected readonly IVendaService _vendaService;
 
-        public VendaController(ApplicationDbContext context, IMapper mapper)
+        public VendaController(IVendaRepository vendaRepository, IMapper mapper, IVendaService vendaService)
         {
-            _context = context;
+            _vendaRepository = vendaRepository;
             _mapper = mapper;
+            _vendaService = vendaService;
         }
 
         public IActionResult Index()
         {
-            var vendas = _context.Vendas.ToList();
+            var vendas = _vendaRepository.Get();
 
             return View(vendas);
         }
@@ -30,19 +34,9 @@ namespace SistemaVenda.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            var clientes = _context.Clientes.ToList();
-            var clienteView = _mapper.Map<List<ClienteViewModel>>(clientes);
+            var venda = _vendaService.Form();
 
-            var produtos = _context.Produtos.ToList();
-            var produtoView = _mapper.Map<List<ProdutoViewModel>>(produtos);
-
-            var vendaForm = new VendaFormViewModel
-            {
-                ListaProdutos = produtoView,
-                ListaClientes = clienteView
-            };
-
-            return View(vendaForm);
+            return View(venda);
 
         }
 
@@ -52,44 +46,17 @@ namespace SistemaVenda.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var clientes = _context.Clientes.ToList();
-                var clienteView = _mapper.Map<List<ClienteViewModel>>(clientes);
-
-                var produtos = _context.Produtos.ToList();
-                var produtoView = _mapper.Map<List<ProdutoViewModel>>(produtos);
-
-                var vendaForm = new VendaFormViewModel
-                {
-                    ListaProdutos = produtoView,
-                    ListaClientes = clienteView
-                };
+                var vendaForm = _vendaService.Form();
 
                 return View(vendaForm);
             }
 
-            var VendaProdutos = JsonConvert.DeserializeObject<ICollection<VendaProdutos>>(vendaFormView.Venda.JsonProdutos);
 
-            double valorTotal = 0;
+            var vendaView = _vendaService.Criacao(vendaFormView);
 
-            foreach(var produto in VendaProdutos)
-            {
-                valorTotal += produto.ValorTotal;
-            }
+            var venda = _mapper.Map<Venda>(vendaView);
 
-            var vendaView = new VendaViewModel
-            {
-                ClienteId = vendaFormView.Venda.ClienteId,
-                DataVenda = (DateTime)vendaFormView.Venda.DataVenda,
-                Produtos = VendaProdutos,
-                ValorTotal = valorTotal,
-            };
-
-            var venda = _mapper.Map<Venda>(vendaView); 
-            
-            _context.Vendas.Add(venda);
-            _context.SaveChanges();
-
-
+            _vendaRepository.Create(venda);
 
             return RedirectToAction(nameof(Index));
         }
@@ -97,7 +64,7 @@ namespace SistemaVenda.Controllers
         [HttpGet("LerValorProduto/{id}")]
         public double LerValorProduto(int id)
         {
-            return _context.Produtos.Where(p => p.Id == id).Select(p => p.Valor).FirstOrDefault();
+            return _vendaService.LerValorProduto(id);
         }
 
     }

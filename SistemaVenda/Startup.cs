@@ -1,6 +1,10 @@
-﻿using Application.Services;
+﻿
+using Application.Services;
 using Application.Services.Interfaces;
+using Application.Services.Venda;
 using Domain.Entidades;
+using Domain.Services;
+using Infra;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Repositorio.DAL;
@@ -8,7 +12,6 @@ using Repositorio.Interfaces;
 using Repositorio.Repositories;
 using SistemaVenda.Helpers;
 using SistemaVenda.Models.Profiles;
-using SistemaVenda.Services;
 using System;
 
 namespace SistemaVenda
@@ -49,26 +52,11 @@ namespace SistemaVenda
 
         public void ConfigureServices(IServiceCollection services) {
 
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
-            services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-            });
-
-
-            services.AddIdentity<Usuario, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
-
-            services.AddScoped<IAuthenticate, AuthenticateService>();
+            services.AddScoped<IUsuarioService, UsuarioService>();
             services.AddScoped<Criptografia>();
-            // services.AddScoped<IServicoAplicacaoCategoria, ServicoAplicacaoCategoria>();
-            services.AddScoped<ICategoriaRepository, CategoriaRepository>();
+            services.AddInfrascruture(configuration);
 
+            services.AddScoped<IVendaService, VendaService>();
             services.AddControllersWithViews();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSession();
